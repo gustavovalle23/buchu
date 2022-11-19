@@ -24,5 +24,43 @@ def test_should_return_a_not_found_err():
     ]
 
     for scenario in scenarios:
-        assert scenario.get("ret").to_json().get("Error") == scenario.get("expect")
-        assert scenario.get("ret").isNotFoundError == True
+        assert scenario.get("ret").to_json().get(
+            "Error") == scenario.get("expect")
+        assert scenario.get("ret").is_not_found_error == True
+
+
+def test_should_return_a_already_exists_err():
+    scenarios = [
+        {
+            'ret': Err.already_exists(payload={'entity': 'user'}, cause={'foo': 'bar'}),
+            'expect': {
+                'payload': {'entity': 'user'},
+                'cause': {'foo': 'bar'},
+                'code': 'ALREADY_EXISTS',
+                'message': 'Already exists'
+            }
+        },
+        {
+            'ret': Err.already_exists(message='message', payload={'entity': 'user'}, cause={'foo': 'bar'}),
+            'expect': {
+                'payload': {'entity': 'user'},
+                'cause': {'foo': 'bar'},
+                'code': 'ALREADY_EXISTS',
+                'message': 'message'
+            }
+        },
+        {
+            'ret': Err.already_exists(),
+            'expect': {
+                'payload': None,
+                'cause': None,
+                'code': 'ALREADY_EXISTS',
+                'message': 'Already exists'
+            }
+        }
+    ]
+
+    for scenario in scenarios:
+        assert scenario.get("ret").to_json().get(
+            "Error") == scenario.get("expect")
+        assert scenario.get("ret").is_already_exists_error == True
