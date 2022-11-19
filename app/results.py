@@ -2,13 +2,13 @@
 import json
 
 
-class Ok:
+class _Ok:
     value: any = None
 
     def __init__(self, value) -> None:
         self.value = value
 
-        if isinstance(value, Ok):
+        if isinstance(value, _Ok):
             self.value = value.value
 
     @property
@@ -38,11 +38,11 @@ class Ok:
         }
 
 
-class Err:
+class _Err:
     def __init__(self, error) -> None:
         self._error = error
 
-        if isinstance(error, Err):
+        if isinstance(error, _Err):
             self._error = error._error
 
     @property
@@ -70,3 +70,25 @@ class Err:
         error = '' if self._error == None else self._error
         error = str(error) if isinstance(error, Exception) else error
         return {'Error': error}
+
+    def __str__(self) -> str:
+        return json.dumps(self.to_json().get('Error'))
+
+
+class _ErrBuilder:
+    @staticmethod
+    def build_custom_err(code, message, payload, cause, caller):
+        err = _Err({'payload': payload, 'cause': cause,
+                   'code': code, 'message': message})
+        setattr(err, f'is{caller}Error', True)
+        return err
+
+    @staticmethod
+    def not_found(payload, cause, message='Not Found'):
+        return _ErrBuilder.build_custom_err('NOT_FOUND', message, payload, cause, 'NotFound')
+
+
+def Ok(value): return _Ok(value)
+
+
+Err = _ErrBuilder
