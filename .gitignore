@@ -1,9 +1,3 @@
-# Python
-venv/
-__pycache__
-*db
-
-
 # Logs
 logs
 *.log
