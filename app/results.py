@@ -84,7 +84,7 @@ class _ErrBuilder:
         return err
 
     @staticmethod
-    def not_found(payload, cause, message='Not Found'):
+    def not_found(payload=None, cause=None, message='Not Found'):
         return _ErrBuilder.build_custom_err('NOT_FOUND', message, payload, cause, 'not_found')
 
     @staticmethod
@@ -92,20 +92,20 @@ class _ErrBuilder:
         return _ErrBuilder.build_custom_err('ALREADY_EXISTS', message, payload, cause, 'already_exists')
 
     @staticmethod
-    def invalid_entity(payload, cause, message='Invalid entity'):
+    def invalid_entity(payload=None, cause=None, message='Invalid entity'):
         return _ErrBuilder.build_custom_err('INVALID_ENTITY', message, payload, cause, 'invalid_entity')
 
     @staticmethod
-    def invalid_arguments(args,  cause, payload={}, message='Invalid arguments'):
+    def invalid_arguments(args=None,  cause=None, payload={}, message='Invalid arguments'):
         payload['invalid_args'] = args
         return _ErrBuilder.build_custom_err('INVALID_ARGUMENTS', message, payload, cause, 'invalid_arguments')
 
     @staticmethod
-    def permission_denied(payload, cause, message='Permission denied'):
+    def permission_denied(payload=None, cause=None, message='Permission denied'):
         return _ErrBuilder.build_custom_err('PERMISSION_DENIED', message, payload, cause, 'permission_denied')
 
     @staticmethod
-    def unknown(payload, cause, message='Unknown Error'):
+    def unknown(payload=None, cause=None, message='Unknown Error'):
         return _ErrBuilder.build_custom_err('UNKNOWN', message, payload, cause, 'unknown')
 
 
